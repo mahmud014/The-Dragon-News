@@ -61,7 +61,7 @@ const NewsCard = ({ news }) => {
         {/* Read More */}
         <div className="mt-2">
           <Link
-            to={`/category/${id}`}
+            to={`/newsdetails/${id}`}
             className="text-blue-600 hover:underline text-sm font-medium"
           >
             Read More

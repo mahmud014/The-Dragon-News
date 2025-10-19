@@ -1,9 +1,13 @@
-import React, { use } from "react";
-import { Link } from "react-router";
+import React, { use, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router";
 import { AuthContext } from "../Provider/AuthProvider";
 
 const LoginPage = () => {
   const { loginUser, setUser } = use(AuthContext);
+  const [error, setError] = useState("");
+
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -13,11 +17,14 @@ const LoginPage = () => {
       .then((result) => {
         const user = result.user;
         setUser(user);
+        navigate(`${location.state ? location.state : "/"}`);
         alert("Login success");
       })
       .catch((error) => {
-        const errorMessage = error.message;
-        alert(errorMessage);
+        const errorCode = error.code;
+        // const errorMessage = error.message;
+        // alert(errorMessage);
+        setError(errorCode);
       });
   };
   return (
@@ -34,6 +41,7 @@ const LoginPage = () => {
                 className="input bg-base-200"
                 placeholder="Email"
                 name="email"
+                required
               />
               {/* Password */}
               <label className="label">Password</label>
@@ -42,10 +50,13 @@ const LoginPage = () => {
                 className="input bg-base-200"
                 placeholder="Password"
                 name="password"
+                required
               />
               <div>
                 <a className="link link-hover">Forgot password?</a>
               </div>
+
+              {error && <p className="text-sm text-red-500">{error}</p>}
               <button type="submit" className="btn btn-neutral mt-4">
                 Login
               </button>

@@ -1,11 +1,13 @@
 import React, { use } from "react";
 import { FaGithub } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { AuthContext } from "../Provider/AuthProvider";
 
 const RegisterPage = () => {
-  const { createUser, setUser } = use(AuthContext);
+  const { createUser, setUser, updateUser } = use(AuthContext);
+
+  const navigate = useNavigate();
 
   const handleRegister = (e) => {
     e.preventDefault();
@@ -16,7 +18,13 @@ const RegisterPage = () => {
     createUser(email, password)
       .then((result) => {
         const user = result.user;
-        setUser(user);
+        updateUser({
+          displayName: name,
+          photoURL: photo,
+        }).then(() => {
+          setUser({ ...user, displayName: name, photoURL: photo });
+        });
+        navigate("/");
         alert("Account create success");
       })
       .catch((error) => {

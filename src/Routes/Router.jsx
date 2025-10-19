@@ -5,6 +5,9 @@ import About from "../Pages/About";
 import Career from "../Pages/Career";
 import ErrorPage from "../Components/ErrorPage";
 import CategoryNews from "../Pages/CategoryNews";
+import AuthLayout from "../Roots/AuthLayout";
+import LoginPage from "../Pages/LoginPage";
+import RegisterPage from "../Pages/RegisterPage";
 
 export const router = createBrowserRouter([
   {
@@ -13,21 +16,35 @@ export const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       {
-        path: "",
+        index: true,
         Component: Home,
       },
       {
-        path: "about",
+        path: "/about",
         Component: About,
       },
       {
-        path: "career",
+        path: "/career",
         Component: Career,
       },
       {
         path: "category/:id",
         Component: CategoryNews,
         loader: () => fetch("/news.json"),
+      },
+    ],
+  },
+  {
+    path: "/auth",
+    Component: AuthLayout,
+    children: [
+      {
+        path: "/auth/login",
+        Component: LoginPage,
+      },
+      {
+        path: "/auth/register",
+        Component: RegisterPage,
       },
     ],
   },
